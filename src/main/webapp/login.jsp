@@ -9,11 +9,14 @@
 	<title>Insert title here</title>
 </head>
 <body>
+	<!-- 부트스트랩 표준 네이게이션 바 -->
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
+			<!-- 화면너비가 넓으면 navbar-collapse이 표시되고, navbar-toggle은 숨겨짐 -->
 			<button type="button" class="navbar-toggle collapsed" 
 				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
 				aria-expanded="false">
+				<!-- 아이콘 내 선 (단순이미지용) -->
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -39,12 +42,14 @@
 		</div> 
 	</nav>
 	<div class="container">
+		<!-- col-lg-4 : 큰화면 4열 길이 -->
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
 			<div class="jumbotron" style="padding-top:20px";>
 				<form method="post" action="loginAction.jsp">
 					<h3 style="text-align:center;">로그인 화면</h3>
 					<div class="form-group">
+						<!-- 입력하지 않은 상태에서는 아이디, 비밀번호 라는 글자가 뜰수있게, 최대글자 설정 -->
 						<input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20">
 					</div>
 					<div class="form-group">
