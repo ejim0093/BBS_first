@@ -5,9 +5,11 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Hello world</title>
+	<title>JSP 게시판 웹 사이트</title>
 </head>
 <body>
-	Hello world
+	<script type="text/javascript">
+		location.href = 'login.jsp';	// 페이지 이동
+	</script>
 </body>
 </html>
