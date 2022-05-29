@@ -4,30 +4,42 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class User2DAO {
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
+public class UserDAO {
 	
 	private Connection conn;
 	private PreparedStatement pstmt;
+	private DataSource dataFactory;
 	private ResultSet rs;	
 	
-	public User2DAO() {
+	public UserDAO() {
 		try {
-			String dbURL = "jdbc:oracle:thin:@localhost:1521:XE";
-			String dbID = "ezen";
-			String dbPassword = "0824";
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+			Context ctx = new InitialContext();
+			Context envContext = (Context)ctx.lookup("java:comp/env");
+			dataFactory = (DataSource)envContext.lookup("jdbc/oracle");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public int login(String userId, String userPassword) {
-		String SQL = "SELECT USERID FROM USER2 WHERE USERID = ?";
 		try {
-			pstmt = conn.prepareStatement(SQL);
-			
+			conn = dataFactory.getConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String query = "SELECT userPassword FROM USER2 WHERE USERID = ?";
+		System.out.println("PreparedStatement : "+query);
+		
+		try {
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, userId);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -43,5 +55,4 @@ public class User2DAO {
 		}
 		return -2;	// 데이터베이스 오류
 	}
-	
 }
