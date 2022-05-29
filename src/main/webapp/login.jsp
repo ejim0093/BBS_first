@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="css/bootstrap.min.css">	<!-- css 부트스트랩 지정 -->
-	<title>Insert title here</title>
+	<title>JSP 게시판 웹 사이트</title>
 </head>
 <body>
 	<!-- 부트스트랩 표준 네이게이션 바 -->
@@ -50,7 +50,7 @@
 					<h3 style="text-align:center;">로그인 화면</h3>
 					<div class="form-group">
 						<!-- 입력하지 않은 상태에서는 아이디, 비밀번호 라는 글자가 뜰수있게, 최대글자 설정 -->
-						<input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20">
+						<input type="text" class="form-control" placeholder="아이디" name="userId" maxlength="20">
 					</div>
 					<div class="form-group">
 						<input type="password" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20">
