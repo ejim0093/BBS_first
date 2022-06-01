@@ -14,7 +14,6 @@
 		<div class="navbar-header">
 			<!-- 화면너비가 넓으면 navbar-collapse이 표시되고, navbar-toggle은 숨겨짐 -->
 			<button type="button" class="navbar-toggle collapsed" 
-				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
 				aria-expanded="false">
 				<!-- 아이콘 내 선 (단순이미지용) -->
 				<span class="icon-bar"></span>

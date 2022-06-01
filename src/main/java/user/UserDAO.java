@@ -28,6 +28,8 @@ public class UserDAO {
 	}
 	
 	public int login(String userId, String userPassword) {
+		
+		//커넥션
 		try {
 			conn = dataFactory.getConnection();
 		} catch (SQLException e1) {
@@ -54,5 +56,33 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return -2;	// 데이터베이스 오류
+	}
+	
+	// 가입시 기재한 User 그대로 반영 
+	public int join(User user) {
+		
+		//커넥션
+		try {
+			conn = dataFactory.getConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String SQL = "INSERT INTO USER2 VALUES (?, ?, ?, ?, ?)";
+		System.out.println("PreparedStatement : "+SQL);
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, user.getUserId());
+			pstmt.setString(2, user.getUserPassword());
+			pstmt.setString(3, user.getUserName());
+			pstmt.setString(4, user.getUserGender());
+			pstmt.setString(5, user.getUserEmail());
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }
