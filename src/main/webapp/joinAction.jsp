@@ -21,6 +21,17 @@ request.setCharacterEncoding("utf-8");
 </head>
 <body>
 	<%
+	String userID = null;
+	if (session.getAttribute("userId")!=null){
+		userID = (String)session.getAttribute("userId");
+	}
+	if (userID != null){
+		PrintWriter script = response.getWriter();
+		script.print("<script>");
+		script.print("alert('이미 로그인이 되어 있습니다.');");
+		script.print("location.href='main.jsp'");
+		script.print("</script>");
+	}
 	//입력되지 않은 항목 확인
 	if (user.getUserId()==null || user.getUserPassword()==null || user.getUserName()==null || user.getUserGender()==null || user.getUserEmail()==null){
 		PrintWriter script = response.getWriter();
@@ -41,6 +52,8 @@ request.setCharacterEncoding("utf-8");
 				script.print("history.back()");
 				script.print("</script>");
 			} else {
+				//가입 성공시 세션 발생
+				session.setAttribute("userId", user.getUserId());
 				//정상적으로 실행시 메인창으로 이동
 				PrintWriter script = response.getWriter();
 				script.print("<script>");

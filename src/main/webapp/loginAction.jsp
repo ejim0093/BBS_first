@@ -17,7 +17,18 @@ request.setCharacterEncoding("utf-8");
 </head>
 <body>
 	<%
-	UserDAO userDAO = new UserDAO();
+		String userID = null;
+		if (session.getAttribute("userId")!=null){
+			userID = (String)session.getAttribute("userId");
+		}
+		if (userID != null){
+			PrintWriter script = response.getWriter();
+			script.print("<script>");
+			script.print("alert('이미 로그인이 되어 있습니다.');");
+			script.print("location.href='main.jsp'");
+			script.print("</script>");
+		}
+		UserDAO userDAO = new UserDAO();
 			int result = userDAO.login(user.getUserId(), user.getUserPassword());
 			if(result == 1){
 				session.setAttribute("userId", user.getUserId());
