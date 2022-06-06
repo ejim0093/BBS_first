@@ -101,7 +101,7 @@ request.setCharacterEncoding("utf-8");
 					%>
 					<tr>
 						<td><%= list.get(i).getBbsId() %></td>
-						<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsId() %>"><%= list.get(i).getBbsTitle() %></a></td>
+						<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsId() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
 						<td><%= list.get(i).getUserId() %></td>
 						<td><%= list.get(i).getBbsDate() %></td>
 					</tr>
