@@ -103,7 +103,7 @@ request.setCharacterEncoding("utf-8");
 						<td><%= list.get(i).getBbsId() %></td>
 						<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsId() %>"><%= list.get(i).getBbsTitle() %></a></td>
 						<td><%= list.get(i).getUserId() %></td>
-						<td><%= list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13)+"시"+list.get(i).getBbsDate().substring(14, 16)+"분" %></td>
+						<td><%= list.get(i).getBbsDate() %></td>
 					</tr>
 					<%
 						}

@@ -32,7 +32,7 @@ public class BbsDAO {
 		// 'SELECT SYSDATE FROM DUAL'로 바로 대입했더니
 		// String으로 변수 대입했을 때 '[Oracle] ORA-01861: 리터럴이 형식 문자열과 일치하지 않음' 오류 뜨는것을 확인함
 		// 반드시 SQL문을 가져올 때 TO_CHAR을 이용해서 형변환을 시켜줘야 함
-		String SQL ="SELECT TO_CHAR(SYSDATE,'yyyy/mm/dd') FROM DUAL";
+		String SQL ="SELECT TO_CHAR(SYSDATE,'yyyy/mm/dd hh24:mi:ss') FROM DUAL";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			System.out.println("PreparedStatement : "+SQL);
