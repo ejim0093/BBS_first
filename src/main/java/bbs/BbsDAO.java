@@ -35,6 +35,7 @@ public class BbsDAO {
 		String SQL ="SELECT TO_CHAR(SYSDATE,'yyyy/mm/dd') FROM DUAL";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			System.out.println("PreparedStatement : "+SQL);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				return rs.getString(1);
@@ -50,6 +51,7 @@ public class BbsDAO {
 		String SQL ="SELECT BBSID FROM BBS ORDER BY BBSID DESC";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			System.out.println("PreparedStatement : "+SQL);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				return rs.getInt(1)+1;
@@ -65,9 +67,9 @@ public class BbsDAO {
 	public int write(String bbsTitle, String userId, String bbsContent) {
 		
 		String SQL ="INSERT INTO BBS VALUES (?,?,?,?,?,?)";
-		System.out.println("PreparedStatement : "+SQL);
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			System.out.println("PreparedStatement : "+SQL);
 			pstmt.setInt(1, getNext());
 			pstmt.setString(2, bbsTitle);
 			pstmt.setString(3, userId);
@@ -89,6 +91,7 @@ public class BbsDAO {
 		ArrayList<Bbs> list = new ArrayList<Bbs>();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			System.out.println("PreparedStatement : "+SQL);
 			//글번호에서 10의 자리수는 절삭한 수
 			pstmt.setInt(1, getNext()- (pageNumber - 1)*10);
 			rs = pstmt.executeQuery();
@@ -114,6 +117,7 @@ public class BbsDAO {
 		String SQL = "SELECT * FROM BBS WHERE BBSID < ? AND BBSAVAILABLE = 1";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			System.out.println("PreparedStatement : "+SQL);
 			pstmt.setInt(1, getNext() - (pageNumber - 1) * 10);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -123,5 +127,29 @@ public class BbsDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public Bbs getBbs(int bbsID) {
+		
+		String SQL = "SELECT * FROM BBS WHERE BBSID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			System.out.println("PreparedStatement : "+SQL);
+			pstmt.setInt(1, bbsID);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				Bbs bbs = new Bbs();
+				bbs.setBbsId(rs.getInt(1));
+				bbs.setBbsTitle(rs.getString(2));
+				bbs.setUserId(rs.getString(3));
+				bbs.setBbsDate(rs.getString(4));
+				bbs.setBbsContent(rs.getString(5));
+				bbs.setBbsAvailable(rs.getInt(6));
+				return bbs;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
 <%@ page import="bbs.Bbs" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="bbs.BbsDAO" %>
 <%
 request.setCharacterEncoding("utf-8");
 %>
@@ -15,22 +14,24 @@ request.setCharacterEncoding("utf-8");
 	<link rel="stylesheet" href="css/bootstrap.min.css">	<!-- css 부트스트랩 지정 -->
 	<title>JSP 게시판 웹 사이트</title>
 </head>
-<style>
-	a, a:hover {
-	color: black;
-	text-decoration: none;
-}
-</style>
 <body>
 	<%
 		String userId = null;
 		if(session.getAttribute("userId") != null){
 			userId = (String)session.getAttribute("userId");
 		}
-		int pageNumber = 1;
-		if(request.getParameter("pageNumber")!=null){
-			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int bbsID = 0;
+		if(request.getParameter("bbsID") != null) {
+			bbsID = Integer.parseInt(request.getParameter("bbsID"));
 		}
+		if(bbsID == 0) {
+			PrintWriter script = response.getWriter();
+			script.print("<script>");
+			script.print("alert('유효하지 않은 글 입니다.');");
+			script.print("location.href='bbs.jsp'");
+			script.print("</script>");
+		}
+		Bbs bbs = new BbsDAO().getBbs(bbsID);
 	%>
 	<!-- 부트스트랩 표준 네이게이션 바 -->
 	<nav class="navbar navbar-default">
@@ -84,45 +85,42 @@ request.setCharacterEncoding("utf-8");
 	</nav>
 	<div class="container">
 		<div class="raw">
-			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd;">
+			<table class="table table-striped"
+				style="text-align: center; border: 1px solid #dddddd;">
 				<thead>
 					<tr>
-						<th style="background-color: #eeeeee; text-align: center;">번호</th>
-						<th style="background-color: #eeeeee; text-align: center;">제목</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
+						<th colspan="3" style="background-color: #eeeeee; text-align: center;">게시판 글 보기</th>
 					</tr>
 				</thead>
 				<tbody>
-					<%
-						BbsDAO bbsDAO = new BbsDAO();
-						ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
-						for(int i=0; i<list.size(); i++){
-					%>
 					<tr>
-						<td><%= list.get(i).getBbsId() %></td>
-						<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsId() %>"><%= list.get(i).getBbsTitle() %></a></td>
-						<td><%= list.get(i).getUserId() %></td>
-						<td><%= list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13)+"시"+list.get(i).getBbsDate().substring(14, 16)+"분" %></td>
+						<td style="width: 20%;">글 제목</td>
+						<td colspan="2"><%= bbs.getBbsTitle() %></td>
 					</tr>
-					<%
-						}
-					%>
+					<tr>
+						<td>작성자</td>
+						<td colspan="2"><%= bbs.getUserId() %></td>
+					</tr>
+					<tr>
+						<td>작성일자</td>
+						<td colspan="2"><%= bbs.getBbsDate().substring(0, 11) + bbs.getBbsDate().substring(11, 13)+"시" + bbs.getBbsDate().substring(14, 16)+"분" %></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td colspan="2" style="min-height: 200px; text-align: left;"><%= bbs.getBbsContent() %></td>
+					</tr>
 				</tbody>
-				<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
 			</table>
+			<a href="bbs.jsp" class="btn btn-primary">목록</a>
 			<%
-				if(pageNumber != 1){
+				if (userId != null && userId.equals(bbs.getUserId())){
 			%>
-				<a href="bbs.jsp?pageNumber=<%= pageNumber -1 %>" class="btn btn-success btn-arrow-left">다음</a>
+				<a href="update.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">수정</a>
+				<a href="deleteAction.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">삭제</a>
 			<%
-				} 
-				if (bbsDAO.nextPage(pageNumber+1)) {
+				}
 			%>
-				<a href="bbs.jsp?pageNumber=<%=pageNumber +1%>" class="btn btn-success btn-arrow-left">이전</a>
-			<%
-			}
-			%>
+			<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
